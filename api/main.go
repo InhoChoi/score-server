@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"./worker"
 	"github.com/gin-gonic/gin"
+	"github.com/inhochoi/score-server/api/worker"
 )
 
 var workerNumber = flag.Int("WorkerNumber", 4, "Worker Number")
