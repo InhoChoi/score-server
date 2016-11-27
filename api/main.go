@@ -47,6 +47,11 @@ func main() {
 	r.GET("/api/auth", checkAuth, Auth_Get)
 	r.POST("/api/auth", Auth_Post)
 	r.DELETE("/api/auth", checkAuth, Auth_Delete)
+
+	r.NoRoute(func(c *gin.Context) {
+		c.Status(404)
+	})
+
 	r.Run()
 }
 
