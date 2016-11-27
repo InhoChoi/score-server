@@ -1,11 +1,10 @@
-package worker
+package main
 
 import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"os"
 	"os/exec"
 	"strings"
@@ -29,17 +28,6 @@ func RemoveFile(path string, destFile string) {
 	if destFile != "" {
 		os.Remove(destFile)
 	}
-}
-
-var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
-func randStringRunes(n int) string {
-	rand.Seed(time.Now().UnixNano())
-	b := make([]rune, n)
-	for i := range b {
-		b[i] = letterRunes[rand.Intn(len(letterRunes))]
-	}
-	return string(b)
 }
 
 func Complie(path string) (error, string, string) {

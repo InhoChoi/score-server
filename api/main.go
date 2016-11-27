@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/inhochoi/score-server/api/worker"
 )
 
 var workerNumber = flag.Int("WorkerNumber", 4, "Worker Number")
@@ -19,7 +18,7 @@ func diffOutput(input string, correct string) bool {
 	return strings.TrimSpace(input) == strings.TrimSpace(correct)
 }
 
-func resultWorker(resultQueue chan worker.Result) {
+func resultWorker(resultQueue chan Result) {
 	//Todo : result Worker 완성
 	for {
 		result := <-resultQueue
@@ -28,7 +27,7 @@ func resultWorker(resultQueue chan worker.Result) {
 }
 
 func startGccWorker() {
-	works := worker.NewWorker()
+	works := NewWorker()
 	works.Start(*workerNumber)
 
 	go resultWorker(works.ResultQueue)
