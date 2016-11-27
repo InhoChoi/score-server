@@ -1,0 +1,9 @@
+CREATE TABLE `user` (
+  `id` int(50) unsigned NOT NULL AUTO_INCREMENT,
+  `name` TEXT NOT NULL,
+  `email` TEXT NOT NULL,
+  `password` TEXT NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
