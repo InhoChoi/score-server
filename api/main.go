@@ -35,6 +35,8 @@ func main() {
 	r.POST("/api/problem", checkAuth, Problem_Post)
 	r.DELETE("/api/problem", checkAuth, Problem_Delete)
 
+	r.GET("/api/result", checkAuth, Result_Get)
+
 	r.NoRoute(func(c *gin.Context) {
 		c.Status(404)
 	})
