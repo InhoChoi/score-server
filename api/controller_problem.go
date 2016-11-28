@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 type Submit struct {
 	Id        int    `json:"id"`
@@ -28,6 +31,9 @@ type Problem struct {
 	TestCase  []Problem_TestCase `json:"testcase" binding:"required"`
 	CreatedAt string             `json:"createdAt"`
 }
+
+var insertProblemMutex = &sync.Mutex{}
+var submitProblemMutex = &sync.Mutex{}
 
 func GetProblmes() []Problem {
 	rows, err := database.Query("SELECT id, userid, title, content, createdAt FROM problem ORDER BY createdAt DESC")
@@ -99,13 +105,14 @@ func GetProblme(problemId int) (error, Problem) {
 }
 
 func InsertProblem(problem Problem) {
+	insertProblemMutex.Lock()
 	rows, err := database.Query("INSERT INTO problem (userid, title, content) VALUES (?, ?, ?)", problem.Userid, problem.Title, problem.Content)
 	if err != nil {
 		panic(err)
 	}
 	rows.Close()
 
-	rows, err = database.Query("SELECT LAST_INSERT_ID()")
+	rows, err = database.Query("SELECT id FROM problem_submit WHERE userid=? and title=? and content=? ORDER BY id DESC LIMIT 1", problem.Userid, problem.Title, problem.Content)
 	if err != nil {
 		panic(err)
 	}
@@ -121,16 +128,18 @@ func InsertProblem(problem Problem) {
 		}
 		rows.Close()
 	}
+	insertProblemMutex.Unlock()
 }
 
 func SubmitProblem(problemid int, userid int, submit Submit) int {
+	submitProblemMutex.Lock()
 	rows, err := database.Query("INSERT INTO problem_submit (problemid, userid, code, status, output) VALUES (?, ?, ?, \"waiting\", \"\")", problemid, userid, submit.Code)
 	if err != nil {
 		panic(err)
 	}
 	rows.Close()
 
-	rows, err = database.Query("SELECT LAST_INSERT_ID()")
+	rows, err = database.Query("SELECT id FROM problem_submit WHERE problemid=? and userid=? and code=? ORDER BY id DESC LIMIT 1", problemid, userid, submit.Code)
 	if err != nil {
 		panic(err)
 	}
@@ -138,7 +147,7 @@ func SubmitProblem(problemid int, userid int, submit Submit) int {
 	rows.Next()
 	rows.Scan(&id)
 	rows.Close()
-
+	submitProblemMutex.Unlock()
 	return id
 }
 
