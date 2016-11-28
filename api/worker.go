@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 )
 
@@ -100,18 +101,20 @@ func resultWorker(resultQueue chan Result) {
 	for {
 		result := <-resultQueue
 		if result.Complie == false {
-			ChangeSubmitStatus(result.SubmitId, "Complie Error", result.ComplieResult)
+			go ChangeSubmitStatus(result.SubmitId, "Complie Error", result.ComplieResult)
 		} else if result.Timeout == true {
-			ChangeSubmitStatus(result.SubmitId, "Timeout", "")
+			go ChangeSubmitStatus(result.SubmitId, "Timeout", "")
 		} else if result.Result == true {
-			ChangeSubmitStatus(result.SubmitId, "Correct", "")
+			go ChangeSubmitStatus(result.SubmitId, "Correct", "")
 		} else {
-			ChangeSubmitStatus(result.SubmitId, "Wrong", "")
+			go ChangeSubmitStatus(result.SubmitId, "Wrong", "")
 		}
 	}
 }
 
 func startGccWorker() {
+	runtime.GOMAXPROCS(runtime.NumCPU())
+
 	works := NewWorker()
 	works.Start(*workerNumber)
 	gccWorker = works
