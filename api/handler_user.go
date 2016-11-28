@@ -9,9 +9,10 @@ func User_Get(c *gin.Context) {
 func User_Post(c *gin.Context) {
 	var req User
 	if err := c.BindJSON(&req); err != nil {
-		c.Status(412)
+		c.Status(400)
 		return
 	}
+
 	err, users := GetUserByEmail(req.Email)
 	if err != nil {
 		c.Status(500)
