@@ -32,7 +32,8 @@ func GetUserByEmail(email string) (error, []User) {
 
 func RegisterUser(name string, email string, password string) error {
 	//Todo - Password 암호화
-	_, err := database.Query(`INSERT INTO user (name, email, password) VALUES (?, ?, ?)`, name, email, password)
+	rows, err := database.Query(`INSERT INTO user (name, email, password) VALUES (?, ?, ?)`, name, email, password)
+	defer rows.Close()
 	if err != nil {
 		panic(err)
 	}

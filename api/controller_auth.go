@@ -34,6 +34,7 @@ func GetUseridByToken(token string) (error, int) {
 	}
 
 	rows, err := database.Query(`SELECT userid FROM auth_token WHERE token=? and expiredAt > now()`, token)
+	defer rows.Close()
 	if err != nil {
 		panic(err)
 	}
@@ -51,7 +52,8 @@ func GetUseridByToken(token string) (error, int) {
 
 func CreateToken(userid int) string {
 	token := randStringRunes(128)
-	_, err := database.Query(`INSERT INTO auth_token(userid, token, expiredAt) VALUES (?, ?, now() + INTERVAL 1 DAY)`, userid, token)
+	rows, err := database.Query(`INSERT INTO auth_token(userid, token, expiredAt) VALUES (?, ?, now() + INTERVAL 1 DAY)`, userid, token)
+	defer rows.Close()
 	if err != nil {
 		panic(err)
 	}
@@ -64,6 +66,8 @@ func CheckVaildToken(token string) (error, bool) {
 	}
 
 	rows, err := database.Query(`SELECT count(*) FROM auth_token WHERE token=? and expiredAt > now()`, token)
+	defer rows.Close()
+
 	if err != nil {
 		panic(err)
 	}
@@ -83,14 +87,16 @@ func CheckVaildToken(token string) (error, bool) {
 }
 
 func DeleteAuthToken(token string) {
-	_, err := database.Query(`DELETE FROM auth_token WHERE token=?`, token)
+	rows, err := database.Query(`DELETE FROM auth_token WHERE token=?`, token)
+	defer rows.Close()
 	if err != nil {
 		panic(err)
 	}
 }
 
 func DeleteAllToken(userid int) {
-	_, err := database.Query(`DELETE FROM auth_token WHERE userid=?`, userid)
+	rows, err := database.Query(`DELETE FROM auth_token WHERE userid=?`, userid)
+	defer rows.Close()
 	if err != nil {
 		panic(err)
 	}
