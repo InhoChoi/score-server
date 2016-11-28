@@ -1,18 +1,23 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type Job struct {
-	Id    string
-	Code  string
-	Input string
+	SubmitId  int
+	ProblemId int
+	Code      string
 }
 
 type Result struct {
-	Id      string
-	Complie bool
-	Timeout bool
-	Output  string
+	SubmitId      int
+	ProblemId     int
+	Complie       bool
+	Timeout       bool
+	Result        bool
+	ComplieResult string
 }
 
 type Worker struct {
@@ -32,6 +37,10 @@ func NewWorker() Worker {
 	}
 }
 
+func diffOutput(input string, correct string) bool {
+	return strings.TrimSpace(input) == strings.TrimSpace(correct)
+}
+
 func (w *Worker) Start(n int) {
 	for i := 0; i < n; i++ {
 		fmt.Println("GCC-Worker", i+1, "Start")
@@ -44,19 +53,35 @@ func (w *Worker) Start(n int) {
 
 					if err != nil {
 						RemoveFile(destFile, path)
-						w.ResultQueue <- Result{job.Id, false, false, complieResult}
+						w.ResultQueue <- Result{job.SubmitId, job.ProblemId, false, false, false, complieResult}
 						continue
 					}
 
-					err, timeout, outputResult := Exec(destFile, job.Input)
+					testCase := GetTestCase(job.ProblemId)
 
-					if err != nil || timeout != nil {
-						RemoveFile(destFile, path)
-						w.ResultQueue <- Result{job.Id, true, true, outputResult}
+					wrong := false
+					for i := 0; i < len(testCase); i++ {
+						_, timeout, output := Exec(destFile, testCase[i].Input)
+
+						if timeout != nil {
+							w.ResultQueue <- Result{job.SubmitId, job.ProblemId, true, true, false, ""}
+							wrong = true
+							break
+						}
+
+						if !diffOutput(output, testCase[i].Output) {
+							w.ResultQueue <- Result{job.SubmitId, job.ProblemId, true, false, false, ""}
+							wrong = true
+							break
+						}
+					}
+
+					RemoveFile(destFile, path)
+					if wrong == true {
 						continue
 					}
 
-					w.ResultQueue <- Result{job.Id, true, false, outputResult}
+					w.ResultQueue <- Result{job.SubmitId, job.ProblemId, true, false, true, ""}
 				case <-w.quit:
 					return
 				}
@@ -69,4 +94,27 @@ func (w *Worker) Stop() {
 	go func() {
 		w.quit <- true
 	}()
+}
+
+func resultWorker(resultQueue chan Result) {
+	for {
+		result := <-resultQueue
+		if result.Complie == false {
+			ChangeSubmitStatus(result.SubmitId, "Complie Error", result.ComplieResult)
+		} else if result.Timeout == true {
+			ChangeSubmitStatus(result.SubmitId, "Timeout", "")
+		} else if result.Result == true {
+			ChangeSubmitStatus(result.SubmitId, "Correct", "")
+		} else {
+			ChangeSubmitStatus(result.SubmitId, "Wrong", "")
+		}
+	}
+}
+
+func startGccWorker() {
+	works := NewWorker()
+	works.Start(*workerNumber)
+	gccWorker = works
+
+	go resultWorker(works.ResultQueue)
 }

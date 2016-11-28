@@ -2,36 +2,17 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
+
+var gccWorker Worker
 
 var workerNumber = flag.Int("WorkerNumber", 4, "Worker Number")
 var db_url = flag.String("DBUrl", "127.0.0.1:3306", "Database URL")
 var db_user = flag.String("DBUser", "root", "Database User")
 var db_password = flag.String("DBPassword", "root", "Database Password")
 var db_name = flag.String("DBName", "test", "Database Name")
-
-func diffOutput(input string, correct string) bool {
-	return strings.TrimSpace(input) == strings.TrimSpace(correct)
-}
-
-func resultWorker(resultQueue chan Result) {
-	//Todo : result Worker 완성
-	for {
-		result := <-resultQueue
-		fmt.Println(diffOutput(result.Output, "1 2 3"))
-	}
-}
-
-func startGccWorker() {
-	works := NewWorker()
-	works.Start(*workerNumber)
-
-	go resultWorker(works.ResultQueue)
-}
 
 func main() {
 	flag.Parse()
@@ -47,6 +28,12 @@ func main() {
 	r.GET("/api/auth", checkAuth, Auth_Get)
 	r.POST("/api/auth", Auth_Post)
 	r.DELETE("/api/auth", checkAuth, Auth_Delete)
+
+	r.GET("/api/problem", checkAuth, Problem_Get)
+	r.GET("/api/problem/:id", checkAuth, Problem_Id_Get)
+	r.POST("/api/problem/:id/submit", checkAuth, Problem_Id_Submit_Post)
+	r.POST("/api/problem", checkAuth, Problem_Post)
+	r.DELETE("/api/problem", checkAuth, Problem_Delete)
 
 	r.NoRoute(func(c *gin.Context) {
 		c.Status(404)
