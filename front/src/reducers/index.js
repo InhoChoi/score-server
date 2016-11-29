@@ -1,2 +1,5 @@
-import r_count from './count'
-export const count = r_count
+import r_user from './user'
+import r_auth from './auth'
+
+export const user = r_user;
+export const auth = r_auth;
