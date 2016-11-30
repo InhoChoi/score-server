@@ -13,7 +13,10 @@ import App from './components/App'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Problem from './pages/Problem'
+import ProblemDetail from './pages/ProblemDetail'
+import ProblemSubmit from './pages/ProblemSubmit'
 import Result from './pages/Result'
+import ResultDetail from './pages/ResultDetail'
 
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
@@ -46,7 +49,10 @@ ReactDOM.render(
       <Route component={App} onEnter={isAuth}>
         <Route path="/" component={Home} />
         <Route path="/problem" component={Problem}/>
+        <Route path="/problem/:id" component={ProblemDetail}/>
+        <Route path="/problem/:id/submit" component={ProblemSubmit}/>
         <Route path="/result" component={Result}/>
+        <Route path="/result/:id" component={ResultDetail}/>
       </Route>
       <Route path="/login" component={Login} onEnter={isNeedLogin}/>
       <Redirect from="*" to="/"/>
