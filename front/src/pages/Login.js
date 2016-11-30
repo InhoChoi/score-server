@@ -30,7 +30,7 @@ class Login extends React.Component {
     if( login_error === false) return '';
 
     return (
-      <p className="bg-danger text-center" style={{padding: '5px', 'margin-bottom': '0px'}}>로그인 실패하였습니다</p>
+      <p className="bg-danger text-center" style={{padding: '5px', 'marginBottom': '0px'}}>로그인 실패하였습니다</p>
     )
   }
   render() {
