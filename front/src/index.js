@@ -32,16 +32,6 @@ const isAuth = async (nextState, replace, callback) => {
   callback();
 };
 
-const isNeedLogin = async (nextState, replace, callback) => {
-  if( localStorage.getItem('token') ){
-    try {
-      await axios.get(API_URL + '/auth', { headers: { token: localStorage.getItem('token')}});
-      replace('/');
-    } catch (e) {
-    }
-  }
-  callback();
-};
 
 ReactDOM.render(
   <Provider store={store}>
@@ -54,7 +44,7 @@ ReactDOM.render(
         <Route path="/result" component={Result}/>
         <Route path="/result/:id" component={ResultDetail}/>
       </Route>
-      <Route path="/login" component={Login} onEnter={isNeedLogin}/>
+      <Route path="/login" component={Login} />
       <Redirect from="*" to="/"/>
     </Router>
   </Provider>,
