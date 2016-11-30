@@ -9,8 +9,11 @@ import configureStore from './store'
 import { API_URL } from './config'
 import axios from 'axios'
 
+import App from './components/App'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Problem from './pages/Problem'
+import Result from './pages/Result'
 
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
@@ -40,7 +43,11 @@ const isNeedLogin = async (nextState, replace, callback) => {
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={Home} onEnter={isAuth}/>
+      <Route component={App} onEnter={isAuth}>
+        <Route path="/" component={Home} />
+        <Route path="/problem" component={Problem}/>
+        <Route path="/result" component={Result}/>
+      </Route>
       <Route path="/login" component={Login} onEnter={isNeedLogin}/>
       <Redirect from="*" to="/"/>
     </Router>
