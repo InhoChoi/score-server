@@ -96,7 +96,7 @@ func InsertProblem(problem Problem) {
 	}
 	rows.Close()
 
-	rows, err = database.Query("SELECT id FROM problem_submit WHERE userid=? and title=? and content=? ORDER BY id DESC LIMIT 1", problem.Userid, problem.Title, problem.Content)
+	rows, err = database.Query("SELECT id FROM problem WHERE userid=? and title=? and content=? ORDER BY id DESC LIMIT 1", problem.Userid, problem.Title, problem.Content)
 	if err != nil {
 		panic(err)
 	}
