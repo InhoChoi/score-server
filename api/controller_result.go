@@ -1,7 +1,7 @@
 package main
 
 func GetSubmitResult(userid int) []Submit {
-	rows, err := database.Query("SELECT id, problemid, userid, code, status, output, createdAt FROM problem_submit ORDER BY createdAt DESC")
+	rows, err := database.Query("SELECT problem_submit.id, problem.title, problem.content, problem_submit.status, problem_submit.code, problem_submit.output FROM problem_submit JOIN problem ON problem.id = problem_submit.problemid WHERE problem_submit.userid=? ORDER BY problem_submit.createdAt DESC", userid)
 	defer rows.Close()
 	if err != nil {
 		panic(err)
