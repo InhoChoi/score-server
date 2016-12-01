@@ -1,19 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"sync"
-)
-
-type Submit struct {
-	Id        int    `json:"id"`
-	ProblemId int    `json:"problemid"`
-	UserId    int    `json:"userid"`
-	Code      string `json:"code" binding:"required"`
-	Status    string `json:"status"`
-	Output    string `json:"output"`
-	CreatedAt string `json:"createdAt"`
-}
+import "fmt"
 
 type Problem_TestCase struct {
 	Id        int    `json:"id"`
@@ -31,9 +18,6 @@ type Problem struct {
 	TestCase  []Problem_TestCase `json:"testcase" binding:"required"`
 	CreatedAt string             `json:"createdAt"`
 }
-
-var insertProblemMutex = &sync.Mutex{}
-var submitProblemMutex = &sync.Mutex{}
 
 func GetProblmes() []Problem {
 	rows, err := database.Query("SELECT id, userid, title, content, createdAt FROM problem ORDER BY createdAt DESC")
@@ -129,32 +113,4 @@ func InsertProblem(problem Problem) {
 		rows.Close()
 	}
 	insertProblemMutex.Unlock()
-}
-
-func SubmitProblem(problemid int, userid int, submit Submit) int {
-	submitProblemMutex.Lock()
-	rows, err := database.Query("INSERT INTO problem_submit (problemid, userid, code, status, output) VALUES (?, ?, ?, \"waiting\", \"\")", problemid, userid, submit.Code)
-	if err != nil {
-		panic(err)
-	}
-	rows.Close()
-
-	rows, err = database.Query("SELECT id FROM problem_submit WHERE problemid=? and userid=? and code=? ORDER BY id DESC LIMIT 1", problemid, userid, submit.Code)
-	if err != nil {
-		panic(err)
-	}
-	var id int
-	rows.Next()
-	rows.Scan(&id)
-	rows.Close()
-	submitProblemMutex.Unlock()
-	return id
-}
-
-func ChangeSubmitStatus(submitid int, status string, output string) {
-	rows, err := database.Query("UPDATE problem_submit SET status=?, output=? WHERE id=?", status, output, submitid)
-	if err != nil {
-		panic(err)
-	}
-	rows.Close()
 }
