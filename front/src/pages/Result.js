@@ -34,7 +34,7 @@ class Result extends React.Component{
         <tr key={result.id}>
           <th className="text-center" style={{verticalAlign: 'middle'}}>{result.id}</th>
           <th style={{verticalAlign: 'middle'}}>{this.dateFormat(result.createdAt)}</th>
-          <th style={{verticalAlign: 'middle'}}><Link to={"/problem/"+result.id}>{result.title}</Link></th>
+          <th style={{verticalAlign: 'middle'}}><Link to={"/problem/"+result.problemid}>{result.title}</Link></th>
           <th style={{verticalAlign: 'middle'}}>{status}</th>
         </tr>
       )
