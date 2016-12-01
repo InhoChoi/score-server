@@ -9,13 +9,13 @@ const initialState = {
 
 export default function auth(state = initialState, action) {
   if(action.type === LOGIN_WAITING) {
-    return { fetch: false, error: false, token: '', userid: ''}
+    return { fetching: false, error: false, token: '', userid: ''}
   }
   else if(action.type === LOGIN_SUCCESS) {
-    return { fetch: true, error: false, token: action.token, userid: action.userid}
+    return { fetching: true, error: false, token: action.token, userid: action.userid}
   }
   else if(action.type === LOGIN_FAIL) {
-    return { fetch: false, error: true, token: '', userid: ''}
+    return { fetching: false, error: true, token: '', userid: ''}
   }
   return state
 }

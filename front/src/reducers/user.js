@@ -7,16 +7,16 @@ const initialState = {
 
 export default function register(state = initialState, action) {
   if(action.type === REGISTER_SUCCESS) {
-    return { fetch: false, code: action.code}
+    return { fetching: false, code: action.code}
   }
   else if(action.type === REGISTER_WAITING) {
-    return { fetch: true, code: action.code}
+    return { fetching: true, code: action.code}
   }
   else if(action.type === REGISTER_FAIL) {
-    return { fetch: false, code: action.code}
+    return { fetching: false, code: action.code}
   }
   else if(action.type === REGISTER_SERVER_ERROR) {
-    return { fetch: false, code: action.code}
+    return { fetching: false, code: action.code}
   }
   return state
 }
