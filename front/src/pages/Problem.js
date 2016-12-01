@@ -17,7 +17,7 @@ class Problem extends React.Component {
   _renderProblem(){
     const { fetching, error, problems } = this.props;
     if( error === true) return '';
-    if( fetching === true) return '';
+    if( fetching === true) return <p style={{marginLeft: '10px'}}> 불러오는중... </p>;
 
     const list = problems.map((problem) => {
       return(
@@ -30,7 +30,11 @@ class Problem extends React.Component {
       )
     });
 
-    return list;
+    return (
+      <tbody>
+        {list}
+      </tbody>
+    );
   }
 
   render(){
@@ -49,9 +53,7 @@ class Problem extends React.Component {
                 <th className="col-md-1">제출하기</th>
               </tr>
             </thead>
-            <tbody>
               {this._renderProblem()}
-            </tbody>
           </table>
         </div>
       </div>

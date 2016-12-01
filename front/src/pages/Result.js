@@ -17,7 +17,7 @@ class Result extends React.Component{
   _renderResult(){
     const { fetching, error, results } = this.props;
     if( error === true) return '';
-    if( fetching === true) return '';
+    if( fetching === true) return <p style={{marginLeft: '10px'}}> 불러오는중... </p>;
 
     const list = results.map((result)=>{
       let status = '';
@@ -40,7 +40,11 @@ class Result extends React.Component{
       )
     });
 
-    return list;
+    return (
+      <tbody>
+        {list}
+      </tbody>
+    );
   }
   render(){
     return(
@@ -58,9 +62,7 @@ class Result extends React.Component{
                 <th className="col-md-2">결과</th>
               </tr>
             </thead>
-            <tbody>
-              {this._renderResult()}
-            </tbody>
+            {this._renderResult()}
           </table>
         </div>
       </div>
