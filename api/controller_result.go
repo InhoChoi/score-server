@@ -4,6 +4,7 @@ import "sync"
 
 type Submit struct {
 	Id        int    `json:"id"`
+	ProblemId int    `json:"problemid"`
 	Title     string `json:"title"`
 	Content   string `json:"content"`
 	Status    string `json:"status"`
@@ -16,7 +17,7 @@ var insertProblemMutex = &sync.Mutex{}
 var submitProblemMutex = &sync.Mutex{}
 
 func GetSubmitResult(userid int) []Submit {
-	rows, err := database.Query("SELECT problem_submit.id, problem.title, problem.content, problem_submit.status, problem_submit.code, problem_submit.output, problem_submit.createdAt FROM problem_submit JOIN problem ON problem.id = problem_submit.problemid WHERE problem_submit.userid=? ORDER BY problem_submit.createdAt DESC", userid)
+	rows, err := database.Query("SELECT problem_submit.id, problem.id, problem.title, problem.content, problem_submit.status, problem_submit.code, problem_submit.output, problem_submit.createdAt FROM problem_submit JOIN problem ON problem.id = problem_submit.problemid WHERE problem_submit.userid=? ORDER BY problem_submit.createdAt DESC", userid)
 	defer rows.Close()
 	if err != nil {
 		panic(err)
@@ -25,6 +26,7 @@ func GetSubmitResult(userid int) []Submit {
 	var submits []Submit = []Submit{}
 	for rows.Next() {
 		var id int
+		var problemid int
 		var title string
 		var content string
 		var status string
@@ -32,8 +34,8 @@ func GetSubmitResult(userid int) []Submit {
 		var output string
 		var createdAt string
 
-		rows.Scan(&id, &title, &content, &status, &code, &output, &createdAt)
-		submits = append(submits, Submit{id, title, content, status, code, output, createdAt})
+		rows.Scan(&id, &problemid, &title, &content, &status, &code, &output, &createdAt)
+		submits = append(submits, Submit{id, problemid, title, content, status, code, output, createdAt})
 	}
 
 	return submits
