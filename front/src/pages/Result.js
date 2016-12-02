@@ -17,7 +17,7 @@ class Result extends React.Component{
   _renderResult(){
     const { fetching, error, results } = this.props;
     if( error === true) return '';
-    if( fetching === true) return <p style={{marginLeft: '10px'}}> 불러오는중... </p>;
+    if( fetching === true) return <p style={{marginLeft: '10px'}}>로딩중...</p>;
 
     const list = results.map((result)=>{
       let status = '';

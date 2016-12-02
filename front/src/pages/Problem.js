@@ -17,7 +17,7 @@ class Problem extends React.Component {
   _renderProblem(){
     const { fetching, error, problems } = this.props;
     if( error === true) return '';
-    if( fetching === true) return <p style={{marginLeft: '10px'}}> 불러오는중... </p>;
+    if( fetching === true) return <p style={{marginLeft: '10px'}}>로딩중...</p>;
 
     const list = problems.map((problem) => {
       return(
