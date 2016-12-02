@@ -20,6 +20,7 @@ function NavBar(){
           <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul className="nav navbar-nav">
               <li><Link to="/" activeClassName="active">Home</Link></li>
+              <li><Link to="/register" activeClassName="active">문제 등록하기</Link></li>
               <li><Link to="/problem" activeClassName="active">문제</Link></li>
               <li><Link to="/result" activeClassName="active">결과 확인</Link></li>
             </ul>

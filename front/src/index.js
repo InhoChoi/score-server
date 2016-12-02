@@ -12,6 +12,7 @@ import axios from 'axios'
 import App from './components/App'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import RegisterProblem from './pages/RegisterProblem'
 import Problem from './pages/Problem'
 import ProblemDetail from './pages/ProblemDetail'
 import ProblemSubmit from './pages/ProblemSubmit'
@@ -38,6 +39,7 @@ ReactDOM.render(
     <Router history={history}>
       <Route component={App} onEnter={isAuth}>
         <Route path="/" component={Home} />
+        <Route path="/register" component={RegisterProblem}/>
         <Route path="/problem" component={Problem}/>
         <Route path="/problem/:id" component={ProblemDetail}/>
         <Route path="/problem/:id/submit" component={ProblemSubmit}/>
