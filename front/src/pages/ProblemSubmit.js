@@ -1,10 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { submitCode, initSubmitCode } from '../actions/submit'
+import { browserHistory } from 'react-router'
 
 class ProblemSubmit extends React.Component{
   componentWillMount(){
-    const { initSubmitCode } = this.props;
+    const { initSubmitCode, problems, params } = this.props;
+
+    const problem = problems.filter((problem) => problem.id === parseInt(params.id, 10));
+    if( problem.length === 0 ) return browserHistory.push('/problem');
+
     initSubmitCode();
     this.state = {code: ''};
     this.handlerSubmit = this.handlerSubmit.bind(this);
@@ -53,6 +58,7 @@ class ProblemSubmit extends React.Component{
 
 const mapStateToProps = (state) => ({
   posting: state.submit.posting,
-  error: state.submit.error
+  error: state.submit.error,
+  problems: state.problem.problems
 });
 export default connect(mapStateToProps,{submitCode, initSubmitCode})(ProblemSubmit);
