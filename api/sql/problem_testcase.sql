@@ -5,4 +5,4 @@ CREATE TABLE `problem_testcase` (
   `output` text NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDBD DEFAULT CHARSET=utf8;
