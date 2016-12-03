@@ -15,9 +15,9 @@ class Problem extends React.Component {
   }
 
   _renderProblem(){
-    const { fetching, error, problems } = this.props;
-    if( error === true) return '';
-    if( fetching === true) return <p style={{marginLeft: '10px'}}>로딩중...</p>;
+    const { complete, error, problems } = this.props;
+    if( error === true) return <p style={{marginLeft: '10px'}}>서버 에러</p>;
+    if( complete === false) return <p style={{marginLeft: '10px'}}>로딩중...</p>;
 
     const list = problems.map((problem) => {
       return(
@@ -62,7 +62,7 @@ class Problem extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  fetching: state.problem.fetching,
+  complete: state.problem.complete,
   error: state.problem.error,
   problems: state.problem.problems
 });
