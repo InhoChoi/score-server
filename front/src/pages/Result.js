@@ -7,6 +7,10 @@ class Result extends React.Component{
   componentWillMount() {
     const { getResults } = this.props;
     getResults();
+
+    setInterval(()=>{
+      getResults();
+    }, 5000);
   }
 
   dateFormat(date){
@@ -15,9 +19,9 @@ class Result extends React.Component{
   }
 
   _renderResult(){
-    const { fetching, error, results } = this.props;
-    if( error === true) return '';
-    if( fetching === true) return <p style={{marginLeft: '10px'}}>로딩중...</p>;
+    const { complete, error, results } = this.props;
+    if( error === true) return <p style={{marginLeft: '10px'}}>서버 에러</p>;
+    if( complete === false) return <p style={{marginLeft: '10px'}}>로딩중...</p>;
 
     const list = results.map((result)=>{
       let status = '';
@@ -71,7 +75,7 @@ class Result extends React.Component{
 }
 
 const mapStateToProps = (state) => ({
-  fetching: state.result.fetching,
+  complete: state.result.complete,
   error: state.result.error,
   results: state.result.results
 });
