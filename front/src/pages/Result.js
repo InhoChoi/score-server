@@ -18,7 +18,12 @@ class Result extends React.Component{
 
   dateFormat(date){
     const d = new Date(date);
-    return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}`
+    d.setTime(d.getTime() + 9*60*60*1000);
+    return d.getFullYear() + "-" +
+    ("00" + (d.getMonth() + 1)).slice(-2) + "-" +
+    ("00" + d.getDate()).slice(-2) + " " +
+    ("00" + d.getHours()).slice(-2) + ":" +
+    ("00" + d.getMinutes()).slice(-2);
   }
 
   _renderResult(){
