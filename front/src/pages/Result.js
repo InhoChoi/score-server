@@ -8,9 +8,12 @@ class Result extends React.Component{
     const { getResults } = this.props;
     getResults();
 
-    setInterval(()=>{
-      getResults();
-    }, 5000);
+    const intervalId = setInterval(getResults, 5000);
+    this.setState({intervalId});
+  }
+
+  componentWillUnmount(){
+    clearInterval(this.state.intervalId);
   }
 
   dateFormat(date){
