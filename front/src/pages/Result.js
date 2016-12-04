@@ -8,7 +8,7 @@ class Result extends React.Component{
     const { getResults } = this.props;
     getResults();
 
-    const intervalId = setInterval(getResults, 5000);
+    const intervalId = setInterval(getResults, 1000);
     this.setState({intervalId});
   }
 
