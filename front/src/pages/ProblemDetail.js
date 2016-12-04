@@ -9,6 +9,12 @@ function ProblemDetail({ params, problems }) {
     return <div></div>;
   }
 
+  const splitedContent = problem[0].content.split('\n');
+  let count = 0;
+  const content =  splitedContent.map((content)=>{
+    return <p key={count++}> {content}</p>
+  });
+
   return(
     <div>
       <div className="panel panel-info">
@@ -16,7 +22,7 @@ function ProblemDetail({ params, problems }) {
           <h1 className="panel-title">{problem[0].title}</h1>
         </div>
         <div className="panel-body">
-          {problem[0].content}
+          {content}
         </div>
         <div className="panel-footer">
           <Link className="btn btn-info text-left" to={"/problem/"+problem[0].id+"/submit"}>제출하기</Link>
