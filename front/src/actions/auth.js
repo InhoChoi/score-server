@@ -18,3 +18,20 @@ export function login(email, password) {
     }
   }
 }
+
+export function logout(email, password){
+  return async dispatch=>{
+    try {
+      const token = localStorage.getItem('token');
+      console.log(token);
+      await axios.delete(API_URL + '/auth',{
+        headers:{
+          token
+        }
+      });
+      dispatch(push('/login'));
+    } catch (e) {
+      dispatch(push('/login'));
+    }
+  }
+}

@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router'
+import { connect } from 'react-redux'
+import { logout } from '../../actions/auth'
 import './index.css'
 
-function NavBar(){
+function NavBar({ dispatch }){
   return(
     <div>
       <div className="navbar navbar-default">
@@ -23,6 +25,7 @@ function NavBar(){
               <li><Link to="/register" activeClassName="active">문제 등록하기</Link></li>
               <li><Link to="/problem" activeClassName="active">문제</Link></li>
               <li><Link to="/result" activeClassName="active">결과 확인</Link></li>
+              <li><Link to="/login" onClick={()=>{ dispatch(logout()); }}>로그아웃</Link></li>
             </ul>
           </div>
         </div>
@@ -31,4 +34,4 @@ function NavBar(){
   )
 }
 
-export default NavBar;
+export default connect()(NavBar);
