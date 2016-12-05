@@ -30,6 +30,8 @@ const isAuth = async (nextState, replace, callback) => {
     } catch (e) {
       replace('/login');
     }
+  }else{
+    replace('/login');
   }
   callback();
 };
