@@ -1,0 +1,18 @@
+score-api:
+  build: ./api
+  links:
+    - score-db
+  ports:
+    - "8080:8080"
+  restart: always
+
+score-front:
+  build: ./front
+  ports:
+    - "9000:9000"
+  restart: always
+
+score-db:
+  build: ./db
+  expose:
+    - 3036
