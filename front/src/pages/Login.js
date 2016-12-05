@@ -1,5 +1,6 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from 'react'
+import { Link } from 'react-router'
+import { connect } from 'react-redux'
 import { login } from '../actions/auth'
 
 class Login extends React.Component {
@@ -54,6 +55,7 @@ class Login extends React.Component {
                   <input type="password" className="form-control" onChange={this.handlerChangePassword} placeholder="Password"/>
                 </div>
                 <button type="submit" className="btn btn-primary">로그인</button>
+                <Link style={{marginLeft: '10px'}} className="btn btn-primary" to="/signup">회원가입</Link>
               </form>
             </div>
           </div>

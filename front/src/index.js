@@ -12,6 +12,7 @@ import axios from 'axios'
 import App from './components/App'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import SignUp from './pages/SignUp'
 import RegisterProblem from './pages/RegisterProblem'
 import Problem from './pages/Problem'
 import ProblemDetail from './pages/ProblemDetail'
@@ -47,6 +48,7 @@ ReactDOM.render(
         <Route path="/result/:id" component={ResultDetail}/>
       </Route>
       <Route path="/login" component={Login} />
+      <Route path="/signup" component={SignUp}/>
       <Redirect from="*" to="/"/>
     </Router>
   </Provider>,
