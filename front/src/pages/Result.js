@@ -39,6 +39,8 @@ class Result extends React.Component{
         status = <Link className="btn btn-danger" to={"/result/"+result.id}>오답</Link>;
       }else if( result.status === 'Complie Error'){
         status = <Link className="btn btn-danger" to={"/result/"+result.id}>컴파일 에러</Link>;
+      }else if( result.status === 'Timeout'){
+        status = <Link className="btn btn-danger" to={"/result/"+result.id}>시간 초과</Link>;
       }else{
         status = <Link className="btn btn-warning" to={"/result/"+result.id}>대기중</Link>;
       }

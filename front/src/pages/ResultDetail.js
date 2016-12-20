@@ -16,6 +16,8 @@ function ResultDetail({ results, params }) {
     status = <p className="btn btn-danger">오답</p>;
   }else if( result[0].status === 'Complie Error'){
     status = <p className="btn btn-danger">컴파일 에러</p>;
+  }else if( result[0].status === 'Timeout'){
+    status = <p className="btn btn-danger">시간 초과</p>;
   }else{
     status = <p className="btn btn-warning">대기중</p>;
   }
