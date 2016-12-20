@@ -15,6 +15,6 @@ score-front:
 score-db:
   build: ./db
   expose:
-    - 3036
+    - 3306
   ports:
-    - "3036:3036"
+    - "3306:3306"
