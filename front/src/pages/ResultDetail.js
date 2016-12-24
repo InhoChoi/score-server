@@ -40,7 +40,7 @@ function ResultDetail({ results, params }) {
 
           </div>
           <ul className="list-group">
-            <li className="list-group-item">컴파일 에러 메시지</li>
+            <li className="list-group-item">결과 메시지</li>
           </ul>
           <div className="panel-body">
             <textarea className="form-control" rows="8" value={result[0].output} readOnly></textarea>
