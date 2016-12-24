@@ -5,7 +5,8 @@ RUN apt-get update &&\
     apt-get install git &&\
     git clone https://github.com/inhochoi/score-server &&\
     cd score-server/front &&\
-    npm install
+    npm install&&\
+    npm run build
 
 WORKDIR "/score-server/front"
 
