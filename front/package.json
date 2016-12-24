@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "server": "npm run build && pushstate-server build",
+    "server": "pushstate-server build",
     "build": "react-scripts build",
     "eject": "react-scripts eject"
   }
